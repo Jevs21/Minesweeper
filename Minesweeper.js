@@ -87,7 +87,6 @@ function Minesweeper(w, bombs) {
                     }
 
                 }
-                
             }
         }
     }
@@ -113,9 +112,59 @@ function Minesweeper(w, bombs) {
 
             if(this.board[y][x].state == 'empty'){
                 
-                for(let i = 1; i+x < this.rows; i++){
+                // Check downwards from clicked tile
+                for(let i = 1; y+i < this.rows; i++){
                     if(this.board[y+i][x].is_hidden && this.board[y+i][x].state !== 'bomb'){
                         this.board[y+i][x].is_hidden = false;
+                        // Check right from next tile
+                        for(let j = 1; x+j < this.rows; j++){
+                            if(this.board[y+i][x+j].is_hidden && this.board[y+i][x+j].state !== 'bomb'){
+                                this.board[y+i][x+j].is_hidden = false;
+                            }
+                            else {
+                                break;
+                            }
+                        }
+
+                        // Check left from next tile
+                        for(let j = 1; x-j >= 0; j++){
+                            if(this.board[y+i][x-j].is_hidden && this.board[y+i][x-j].state !== 'bomb'){
+                                this.board[y+i][x-j].is_hidden = false;
+                            }
+                            else {
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                // Check up from clicked tile
+                for(let i = 1; y - i >= 0; i++){
+                    if(this.board[y-i][x].is_hidden && this.board[y-i][x].state !== 'bomb'){
+                        this.board[y-i][x].is_hidden = false;
+
+                        // Check right from next tile
+                        for(let j = 1; x+j < this.rows; j++){
+                            if(this.board[y-i][x+j].is_hidden && this.board[y-i][x+j].state !== 'bomb'){
+                                this.board[y-i][x+j].is_hidden = false;
+                            }
+                            else {
+                                break;
+                            }
+                        }
+
+                        // Check left from next tile
+                        for(let j = 1; x-j >= 0; j++){
+                            if(this.board[y-i][x-j].is_hidden && this.board[y-i][x-j].state !== 'bomb'){
+                                this.board[y-i][x-j].is_hidden = false;
+                            }
+                            else {
+                                break;
+                            }
+                        }
                     }
                     else {
                         break;
