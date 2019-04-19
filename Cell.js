@@ -7,6 +7,7 @@ function Cell(x, y, w) {
     this.number = 0;
 
     this.is_hidden = true;
+    this.is_flagged = false;
     this.state = 'empty';
 
     this.showHidden = function() {

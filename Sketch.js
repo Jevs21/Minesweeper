@@ -16,5 +16,10 @@ function draw() {
 }
 
 function mouseClicked(){
-    game.click(mouseX, mouseY);
+    if(mouseButton === LEFT){
+        game.click(mouseX, mouseY);
+    }
+    else if(mouseButton === RIGHT){
+        game.flag(mouseX, mouseY);
+    }
 }

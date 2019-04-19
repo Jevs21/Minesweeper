@@ -5,7 +5,7 @@ function Minesweeper(w, bombs) {
     this.cell_dim = w / this.rows;
 
     this.bomb_amt = bombs;
-
+    this.bomb_loc = [];
 
     this.buildEmptyBoard = function(){
         for(let i = 0; i < this.rows; i++){
@@ -18,7 +18,6 @@ function Minesweeper(w, bombs) {
     }
 
     this.fillBoardWithBombs = function(){
-        let bomb_locs = [];
         
         for(let i = 0; i < this.bomb_amt; i++){
             let randx = Math.floor(random() * this.dim);
@@ -28,7 +27,23 @@ function Minesweeper(w, bombs) {
             let randi = Math.floor(randy / this.cell_dim);
 
             this.board[randi][randj].state = 'bomb';
+            this.bomb_loc.push([randi, randj]);
         }
+    }
+
+    this.checkWin = function() {
+        
+        let flag_count = 0;
+
+        for(let i = 0; i < this.rows; i++){
+            for(let j = 0; j < this.rows; j++){
+                if(this.board[i][j].is_flagged){
+                    flag_count += 1;
+                    
+                }        
+            }
+        }
+
     }
     
     this.fillBoardWithNumbers = function() {
@@ -85,7 +100,6 @@ function Minesweeper(w, bombs) {
                         this.board[i][j].number = num_adjascent;
                         this.board[i][j].state  = 'number';
                     }
-
                 }
             }
         }
@@ -103,77 +117,39 @@ function Minesweeper(w, bombs) {
         j = Math.floor(x / this.cell_dim);
         i = Math.floor(y / this.cell_dim);
 
-        this.revealOpenSpace(i, j);
-    }
+        if(this.board[i][j].is_hidden){
+            if(this.board[i][j].state == 'empty'){
+                this.board[i][j].is_hidden = false;
 
-    this.revealOpenSpace = function(y, x){
-        if(this.board[y][x].is_hidden){
-            this.board[y][x].is_hidden = false;
-
-            if(this.board[y][x].state == 'empty'){
-                
-                // Check downwards from clicked tile
-                for(let i = 1; y+i < this.rows; i++){
-                    if(this.board[y+i][x].is_hidden && this.board[y+i][x].state !== 'bomb'){
-                        this.board[y+i][x].is_hidden = false;
-                        // Check right from next tile
-                        for(let j = 1; x+j < this.rows; j++){
-                            if(this.board[y+i][x+j].is_hidden && this.board[y+i][x+j].state !== 'bomb'){
-                                this.board[y+i][x+j].is_hidden = false;
-                            }
-                            else {
-                                break;
-                            }
-                        }
-
-                        // Check left from next tile
-                        for(let j = 1; x-j >= 0; j++){
-                            if(this.board[y+i][x-j].is_hidden && this.board[y+i][x-j].state !== 'bomb'){
-                                this.board[y+i][x-j].is_hidden = false;
-                            }
-                            else {
-                                break;
-                            }
-                        }
-                    }
-                    else {
-                        break;
-                    }
+                if(x + this.cell_dim < width) {
+                    this.click(x+this.cell_dim, y);
                 }
-
-                // Check up from clicked tile
-                for(let i = 1; y - i >= 0; i++){
-                    if(this.board[y-i][x].is_hidden && this.board[y-i][x].state !== 'bomb'){
-                        this.board[y-i][x].is_hidden = false;
-
-                        // Check right from next tile
-                        for(let j = 1; x+j < this.rows; j++){
-                            if(this.board[y-i][x+j].is_hidden && this.board[y-i][x+j].state !== 'bomb'){
-                                this.board[y-i][x+j].is_hidden = false;
-                            }
-                            else {
-                                break;
-                            }
-                        }
-
-                        // Check left from next tile
-                        for(let j = 1; x-j >= 0; j++){
-                            if(this.board[y-i][x-j].is_hidden && this.board[y-i][x-j].state !== 'bomb'){
-                                this.board[y-i][x-j].is_hidden = false;
-                            }
-                            else {
-                                break;
-                            }
-                        }
-                    }
-                    else {
-                        break;
-                    }
+        
+                if(x - this.cell_dim > 0){
+                    this.click(x - this.cell_dim, y);
+                }
+        
+                if(y + this.cell_dim < height) {
+                    this.click(x, y + this.cell_dim);
+                }
+        
+                if(y - this.cell_dim > 0){
+                    this.click(x, y - this.cell_dim);
                 }
             }
-            
+            else{
+                this.board[i][j].is_hidden = false;
+            }
         }
+                
+    }
 
+    this.flag = function(x, y) {
+        j = Math.floor(x / this.cell_dim);
+        i = Math.floor(y / this.cell_dim);
+
+        this.board[i][j].is_flagged = ! this.board[i][j].is_flagged;
+        
     }
 
 }
