@@ -1,7 +1,8 @@
 var game;
 
 function setup() {
-    createCanvas(600, 600);
+    let canvas = createCanvas(600, 600);
+    canvas.parent('container');
 
     game = new Minesweeper(width, 20);
     game.buildEmptyBoard();
@@ -9,17 +10,21 @@ function setup() {
     game.fillBoardWithNumbers();
 }
 
-function draw() {
-    background(91);
-    
+function draw() {    
     game.show();
 }
 
 function mouseClicked(){
-    if(mouseButton === LEFT){
-        game.click(mouseX, mouseY);
-    }
-    else if(mouseButton === RIGHT){
+    document.oncontextmenu = function(e) { 
+        e.preventDefault(); 
         game.flag(mouseX, mouseY);
     }
+
+    if(mouseButton === LEFT){
+        game.click(mouseX, mouseY, false);
+    }
 }
+
+
+
+ 
