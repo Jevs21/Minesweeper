@@ -144,7 +144,7 @@ function Minesweeper(w, bombs) {
             }
         }
 
-        if(this.checkWin()){
+        if(this.checkWin()) {
             this.gameOver('WIN');
         }
     }
