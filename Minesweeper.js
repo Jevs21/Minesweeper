@@ -177,6 +177,7 @@ function Minesweeper(w, bombs) {
             }
             else {
                 if(!rec){
+                    this.board[i][j].is_hidden = false;
                     this.gameOver('LOSE');    
                 }
             }

@@ -19,31 +19,28 @@ function Cell(x, y, w) {
         'numbers'   : ['#EA2B1F', '#3AB795', '#69DDFF', '#F8FA90', '#313B72', '#E2A0FF', '#9BE564', '#23FCF8']
     }
 
+    this.image = {
+        'tile': loadImage('Assets/tile.png'),
+        'bomb': loadImage('Assets/bomb.png'),
+        'flag': loadImage('Assets/flag.png')
+    }
+
 
     this.show = function() {
 
         if(this.is_hidden){
 
             if(this.is_flagged){
-                fill(this.colour['flag']);
-                stroke(0);
-                strokeWeight(1);
-                rect(this.x, this.y, this.dim, this.dim);
+                image(this.image['flag'], this.x, this.y, this.dim, this.dim);
             }
             else {
-                fill(this.colour['tile']);
-                stroke(0);
-                strokeWeight(1);
-                rect(this.x, this.y, this.dim, this.dim);
+                image(this.image['tile'],this.x, this.y, this.dim, this.dim);
             }
             
         }
         else {
             if(this.state == 'bomb'){
-                fill(this.colour['bomb']);
-                stroke(0);
-                strokeWeight(1);
-                rect(this.x, this.y, this.dim, this.dim);
+                image(this.image['bomb'],this.x, this.y, this.dim, this.dim);
             }
             else if(this.state == 'number'){
                 fill(this.colour['numbers'][this.number-1]);
